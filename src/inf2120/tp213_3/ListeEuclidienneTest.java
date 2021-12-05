@@ -21,7 +21,7 @@ class ListeEuclidienneTest {
     void inserer1Element() {
         ListeEuclidienne<Integer> c = new ListeEuclidienne<>();
 
-        c.inserer( 10 );
+        c.inserer( 20 );
 
         assertFalse( c.estVide() );
     }
@@ -79,7 +79,7 @@ class ListeEuclidienneTest {
     void lire1element() {
         ListeEuclidienne<Integer> c = new ListeEuclidienne<>();
 
-        c.inserer( 10 );
+        c.inserer( 20 );
 
         assertEquals( 10, c.lire() );
     }
