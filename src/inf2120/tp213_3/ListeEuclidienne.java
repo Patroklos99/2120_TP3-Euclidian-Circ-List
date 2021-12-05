@@ -270,7 +270,7 @@ public class ListeEuclidienne<E> implements Iterable<E> {
             dernier.suivant = nouveau;
             nouveau.suivant = premier;
             nouveau.precedant = dernier;
-            dernier = nouveau;
+            premier = nouveau;
             premier.precedant = dernier;
             }
         n++;
