@@ -318,7 +318,7 @@ public class ListeEuclidienne<E> implements Iterable<E> {
         actuel = premier;
         precedent = dernier;
         do {
-            if (actuel.element == premier.element) {
+            if (premier != null && actuel.element == premier.element ) {
                 if (n == 1) {
                     premier = null;
                     n--;
@@ -329,6 +329,8 @@ public class ListeEuclidienne<E> implements Iterable<E> {
                     premier.precedant = dernier;
                 }
 
+            } else {
+                throw new ListeVideException();
             }
             precedent = actuel;
             actuel = actuel.suivant;
