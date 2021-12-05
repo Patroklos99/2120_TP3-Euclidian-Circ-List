@@ -302,7 +302,11 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      * <p>Change la direction de rotation de la tête de lecture.</p>
      */
     public void inverser() {
-        directionCourante = Direction.ANTIHORAIRE;
+        if (directionCourante == Direction.HORAIRE) {
+            directionCourante = Direction.ANTIHORAIRE;
+        } else {
+            directionCourante = Direction.HORAIRE;
+        }
     }
 
 
