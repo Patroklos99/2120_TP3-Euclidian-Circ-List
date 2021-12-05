@@ -128,6 +128,7 @@ public class ListeEuclidienne<E> implements Iterable<E> {
         }
     }
 
+    Direction directionCourante = Direction.HORAIRE;
     Chainon <E>  premier;
     Chainon <E> dernier;
     private int n = 0;
@@ -212,7 +213,7 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      * @return La direction de rotation.
      */
     public Direction getDirection() {
-        return null;
+        return directionCourante;
     }
 
 
@@ -301,6 +302,7 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      * <p>Change la direction de rotation de la tête de lecture.</p>
      */
     public void inverser() {
+        directionCourante = Direction.ANTIHORAIRE;
     }
 
 
