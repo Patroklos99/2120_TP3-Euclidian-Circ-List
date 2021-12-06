@@ -187,12 +187,18 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      * @throws NoSuchElementException Lorsque la {@code ListeEuclidienne} est vide.
      */
     public E lire() throws NoSuchElementException {
+        Chainon<E> actuel = new Chainon<>();
+        actuel = premier;
         E retour;
-        if (premier != null) {
-            retour = (E) premier.element;
-        } else {
-            throw new NoSuchElementException();
-        }
+        do {
+            if (premier != null) {
+                retour = (E) premier.element;
+                actuel = actuel.suivant;
+            } else {
+                throw new NoSuchElementException();
+            }
+        } while (actuel != premier);
+
         return retour;
     }
 
@@ -244,7 +250,7 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      * @throws ListeVideException Lancé si la {@code ListeEuclidienne} est vide.
      */
     public void ecrire(E element) throws ListeVideException {
-
+        premier.element = element;
     }
 
 
