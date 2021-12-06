@@ -94,6 +94,9 @@ public class ListeEuclidienne<E> implements Iterable<E> {
          */
         public Iter(Chainon<E> element) {
             pointeur = element;
+            System.out.println(dernier);
+            dernier = pointeur.suivant;
+            System.out.println(dernier);
             position++;
         }
 
@@ -123,7 +126,7 @@ public class ListeEuclidienne<E> implements Iterable<E> {
         public E next() throws NoSuchElementException {
             E element = courant.element;
             courant = courant.suivant;
-            return element;
+            return courant.element;
         }
     }
 
@@ -177,7 +180,8 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      */
     @Override
     public Iterator<E> iterator() {
-        return null;
+        Iterator<E> iterateur = new Iter(pointeur);
+        return iterateur;
     }
 
 
@@ -275,12 +279,15 @@ public class ListeEuclidienne<E> implements Iterable<E> {
             dernier = nouveau;
         } else {
             dernier.suivant = nouveau;
-            nouveau.suivant = premier;
+            nouveau.suivant = pointeur;
             nouveau.precedant = dernier;
             premier = nouveau;
             premier.precedant = dernier;
+
         }
-        pointeur = premier;
+        pointeur = nouveau;
+        System.out.println("ultimo " + dernier.element);
+        System.out.println("premier " + premier.element);
         n++;
     }
 
