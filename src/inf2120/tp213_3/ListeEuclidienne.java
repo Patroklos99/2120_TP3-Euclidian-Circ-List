@@ -81,7 +81,7 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      * <p>Un itérateur dans un circuit termine lorsqu'il n'y a plus d'élément dans la {@code ListeEuclidienne}.</p>
      */
     private class Iter implements Iterator<E> {
-        private Chainon<E> courant = premier;
+        private Chainon<E> courant = pointeur;
         int position = 0;
         ListeEuclidienne<E> listeInterne;
 
@@ -246,12 +246,11 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      * @throws ListeVideException Lancé si la {@code ListeEuclidienne} est vide.
      */
     public void ecrire(E element) throws ListeVideException {
-        if (premier != null) {
-            premier.element = element;
+        if (pointeur != null) {
+            pointeur.element = element;
         } else {
             throw new ListeVideException();
         }
-        pointeur = premier;
     }
 
 
