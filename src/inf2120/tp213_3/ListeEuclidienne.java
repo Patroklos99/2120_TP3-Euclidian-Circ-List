@@ -293,9 +293,9 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      */
     public void avancer() throws ListeVideException {
         Chainon<E> chainon = new Chainon<>();
-        chainon = premier;
+        chainon = pointeur;
         if (premier != null) {
-            chainon = premier.suivant;
+            chainon = pointeur.suivant;
             Iter iter = new Iter(chainon);
         } else {
             throw new ListeVideException();
