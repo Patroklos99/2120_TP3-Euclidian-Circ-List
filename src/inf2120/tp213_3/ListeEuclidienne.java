@@ -294,6 +294,11 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      * @throws ListeVideException Lancé lorsque la {@code ListeEuclidienne} est vide.
      */
     public void avancer() throws ListeVideException {
+        if (premier != null) {
+
+        } else {
+            throw new ListeVideException();
+        }
     }
 
 
