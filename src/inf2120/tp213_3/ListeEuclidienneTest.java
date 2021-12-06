@@ -79,8 +79,7 @@ class ListeEuclidienneTest {
     void lire1element() {
         ListeEuclidienne<Integer> c = new ListeEuclidienne<>();
 
-        c.inserer( 20 );
-
+        c.inserer( 10 );
         assertEquals( 10, c.lire() );
     }
 
@@ -90,7 +89,6 @@ class ListeEuclidienneTest {
 
         c.inserer( 10 );
         c.inserer( 11 );
-
         assertEquals( 11, c.lire() );
     }
 

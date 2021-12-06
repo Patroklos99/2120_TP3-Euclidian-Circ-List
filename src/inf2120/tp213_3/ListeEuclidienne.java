@@ -191,7 +191,7 @@ public class ListeEuclidienne<E> implements Iterable<E> {
         actuel = premier;
         E retour;
         do {
-            if (premier != null) {
+            if (actuel != null) {
                 retour = (E) premier.element;
                 actuel = actuel.suivant;
             } else {
@@ -250,7 +250,11 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      * @throws ListeVideException Lancé si la {@code ListeEuclidienne} est vide.
      */
     public void ecrire(E element) throws ListeVideException {
-        premier.element = element;
+        if (premier != null) {
+            premier.element = element;
+        } else {
+            throw new ListeVideException();
+        }
     }
 
 
