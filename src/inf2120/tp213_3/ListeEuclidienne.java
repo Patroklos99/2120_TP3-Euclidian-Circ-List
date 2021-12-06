@@ -94,9 +94,8 @@ public class ListeEuclidienne<E> implements Iterable<E> {
          */
         public Iter(Chainon<E> element) {
             pointeur = element;
-            System.out.println(dernier);
             dernier = pointeur.suivant;
-            System.out.println(dernier);
+            //System.out.println(dernier.element);
             position++;
         }
 
@@ -286,8 +285,6 @@ public class ListeEuclidienne<E> implements Iterable<E> {
 
         }
         pointeur = nouveau;
-        System.out.println("ultimo " + dernier.element);
-        System.out.println("premier " + premier.element);
         n++;
     }
 

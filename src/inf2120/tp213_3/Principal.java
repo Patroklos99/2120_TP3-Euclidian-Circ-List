@@ -7,27 +7,27 @@ public class Principal {
         ListeEuclidienne<Integer> c = new ListeEuclidienne<>();
 
         c.inserer( 10 );
-        System.out.println(c.lire());
+
 
         c.inserer( 11 );
-        System.out.println(c.lire());
-        System.out.println("here" + c);
+        System.out.println("Tête -> " + c.lire());
+        System.out.println("1: " + c);
 
         c.avancer();
-        System.out.println(c.lire());
-        System.out.println("here" + c);
+        System.out.println("Tête -> " + c.lire());
+        System.out.println("2: " + c);
         c.inserer( 12 );
-        System.out.println(c.lire());
+        System.out.println("Tête -> " + c.lire());
         System.out.println(c);
 
 
         c.avancer();
-        System.out.println(c.lire());
+        assertEquals( 10, c.lire() );
         c.avancer();
         assertEquals( 11, c.lire() );
         c.avancer();
         assertEquals( 12, c.lire() );
-
+        System.out.println("Tête -> " + c.lire());
     }
 
 }
