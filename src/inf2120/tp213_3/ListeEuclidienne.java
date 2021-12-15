@@ -74,7 +74,6 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      * <p>Un itérateur dans un circuit termine lorsqu'il n'y a plus d'élément dans la {@code ListeEuclidienne}.</p>
      */
     private class Iter implements Iterator<E> {
-        private Chainon<E> courant = pointeur;
         ListeEuclidienne<E> listeInterne;
 
         /**
@@ -84,14 +83,9 @@ public class ListeEuclidienne<E> implements Iterable<E> {
          * construction de l'itérateur.  Cette itérateur va parcourir la liste dans la même direction que la tête de
          * lecture lors de la construction de l'itérateur.</p>
          */
-        public Iter(Chainon<E> element) {
-            if (n == 0) {
-                pointeur = courant;
-            } else {
-                pointeur = element;
-                dernier = pointeur.suivant;
-            }
-
+        public Iter() {
+            if (n == 0)
+                pointeur = null;
         }
 
 
@@ -103,7 +97,7 @@ public class ListeEuclidienne<E> implements Iterable<E> {
          */
         @Override
         public boolean hasNext() {
-            return null != courant;
+            return null != pointeur;
         }
 
 
@@ -118,8 +112,9 @@ public class ListeEuclidienne<E> implements Iterable<E> {
          */
         @Override
         public E next() throws NoSuchElementException {
-            E element = courant.suivant.element;
-            return element;
+           pointeur = pointeur.suivant;
+            dernier = pointeur.suivant;
+            return pointeur.suivant.element;
         }
     }
 
@@ -166,7 +161,7 @@ public class ListeEuclidienne<E> implements Iterable<E> {
                     premier.precedant = dernier;
 
                 }
-                pointeur = nouveau;
+                pointeur = premier;
                 compteur++;
             } while (compteur != n);
         }
@@ -179,8 +174,7 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      */
     @Override
     public Iterator<E> iterator() {
-        Iterator<E> iterateur = new Iter(pointeur);
-        return iterateur;
+        return new Iter();
     }
 
 
@@ -277,11 +271,16 @@ public class ListeEuclidienne<E> implements Iterable<E> {
             nouveau.precedant = dernier;
             dernier = nouveau;
         } else {
-            dernier.suivant = nouveau;
             nouveau.suivant = pointeur;
             nouveau.precedant = dernier;
+            dernier.suivant = nouveau;
+            pointeur.precedant = nouveau;
             premier = nouveau;
-            premier.precedant = dernier;
+            /*nouveau.suivant = pointeur;
+            dernier.suivant = nouveau;
+            nouveau.precedant = pointeur;
+            premier = nouveau;
+            premier.precedant = pointeur;*/
 
         }
         pointeur = nouveau;
@@ -295,12 +294,9 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      * @throws ListeVideException Lancé lorsque la {@code ListeEuclidienne} est vide.
      */
     public void avancer() throws ListeVideException {
-        Chainon<E> chainon = new Chainon<>();
-        chainon = pointeur;
         if (premier != null) {
-            chainon = pointeur.suivant;
-            Iter iter = new Iter(chainon);
-            iter.next();
+            Iter it = new Iter();
+            it.next();
         } else {
             throw new ListeVideException();
         }
