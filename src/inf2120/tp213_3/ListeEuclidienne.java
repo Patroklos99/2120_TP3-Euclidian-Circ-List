@@ -54,13 +54,6 @@ public class ListeEuclidienne<E> implements Iterable<E> {
         protected Chainon<F> precedant;
         protected Chainon<F> suivant;
 
-
-        /*public Chainon( F element, Chainon<F> precedant, Chainon<F> suivant) {
-            this.element = element;
-            this.precedant = precedant;
-            this.suivant = suivant;
-        }*/
-
         public Chainon(F element) {
             this.element = element;
         }
@@ -82,7 +75,6 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      */
     private class Iter implements Iterator<E> {
         private Chainon<E> courant = pointeur;
-        int position = 0;
         ListeEuclidienne<E> listeInterne;
 
         /**
@@ -93,10 +85,13 @@ public class ListeEuclidienne<E> implements Iterable<E> {
          * lecture lors de la construction de l'itérateur.</p>
          */
         public Iter(Chainon<E> element) {
-            pointeur = element;
-            dernier = pointeur.suivant;
-            //System.out.println(dernier.element);
-            position++;
+            if (n == 0) {
+                pointeur = courant;
+            } else {
+                pointeur = element;
+                dernier = pointeur.suivant;
+            }
+
         }
 
 
@@ -123,9 +118,8 @@ public class ListeEuclidienne<E> implements Iterable<E> {
          */
         @Override
         public E next() throws NoSuchElementException {
-            E element = courant.element;
-            courant = courant.suivant;
-            return courant.element;
+            E element = courant.suivant.element;
+            return element;
         }
     }
 
@@ -154,19 +148,25 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      */
     public ListeEuclidienne(int n, E element) {
         int compteur = 0;
-        if (n >= 0) {
-            this.n = n;
+        this.n = n;
+        if (n > 0) {
             do {
+                Chainon<E> nouveau = new Chainon<>();
+                nouveau.element = element;
                 if (premier == null) {
-                    Chainon<E> actuel = new Chainon<>();
-                    actuel.suivant = premier;
-                    actuel.precedant = premier;
-                } else {
-                    Chainon<E> nouveau = new Chainon<>();
-                    nouveau.suivant = premier;
-                    nouveau.precedant = premier;
                     premier = nouveau;
+                    premier.suivant = premier;
+                    nouveau.precedant = dernier;
+                    dernier = nouveau;
+                } else {
+                    dernier.suivant = nouveau;
+                    nouveau.suivant = pointeur;
+                    nouveau.precedant = dernier;
+                    premier = nouveau;
+                    premier.precedant = dernier;
+
                 }
+                pointeur = nouveau;
                 compteur++;
             } while (compteur != n);
         }
@@ -300,6 +300,7 @@ public class ListeEuclidienne<E> implements Iterable<E> {
         if (premier != null) {
             chainon = pointeur.suivant;
             Iter iter = new Iter(chainon);
+            iter.next();
         } else {
             throw new ListeVideException();
         }

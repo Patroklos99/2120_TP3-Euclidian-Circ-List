@@ -1,7 +1,8 @@
 package inf2120.tp213_3;
-
+import inf2120.tp213_3.ListeEuclidienne;
+import inf2120.tp213_3.ListeVideException;
 import org.junit.jupiter.api.Test;
-
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,7 +22,7 @@ class ListeEuclidienneTest {
     void inserer1Element() {
         ListeEuclidienne<Integer> c = new ListeEuclidienne<>();
 
-        c.inserer( 20 );
+        c.inserer( 10 );
 
         assertFalse( c.estVide() );
     }
@@ -80,6 +81,7 @@ class ListeEuclidienneTest {
         ListeEuclidienne<Integer> c = new ListeEuclidienne<>();
 
         c.inserer( 10 );
+
         assertEquals( 10, c.lire() );
     }
 
@@ -89,6 +91,7 @@ class ListeEuclidienneTest {
 
         c.inserer( 10 );
         c.inserer( 11 );
+
         assertEquals( 11, c.lire() );
     }
 
@@ -397,12 +400,331 @@ class ListeEuclidienneTest {
         assertEquals( ListeEuclidienne.Direction.ANTIHORAIRE, c.getDirection() );
     }
 
+    @Test
+    void constN0null() {
+        ListeEuclidienne<Integer> c = new ListeEuclidienne<>( 0, null );
 
-
-// A FAIRE ...
-
-    //@Test
-    void iterator() {
+        assertTrue( c.estVide() );
     }
 
+    @Test
+    void constN1() {
+        ListeEuclidienne<Integer> c = new ListeEuclidienne<>( 1, 10 );
+
+        assertEquals( 1, c.taille() );
+        assertEquals( 10, c.lire() );
+        assertEquals( ListeEuclidienne.Direction.HORAIRE, c.getDirection() );
+    }
+
+    @Test
+    void constN5() {
+        ListeEuclidienne<Integer> c = new ListeEuclidienne<>( 5, 10 );
+
+        assertEquals( 5, c.taille() );
+        assertEquals( 10, c.lire() );
+        assertEquals( ListeEuclidienne.Direction.HORAIRE, c.getDirection() );
+    }
+
+    @Test
+    void insererTout_0_0() {
+        ListeEuclidienne<Integer> c = new ListeEuclidienne<>();
+        ListeEuclidienne<Integer> c2 = new ListeEuclidienne<>();
+
+        c.insererTout( c2 );
+
+        assertTrue( c.estVide() );
+        assertTrue( c2.estVide() );
+    }
+
+    @Test
+    void insererTout_2_0() {
+        ListeEuclidienne<Integer> c = new ListeEuclidienne<>();
+
+        c.inserer( 10 );
+        c.inserer( 11 );
+
+        ListeEuclidienne<Integer> c2 = new ListeEuclidienne<>();
+
+        c.insererTout( c2 );
+
+        assertEquals( 2, c.taille() );
+        assertEquals( 11, c.lire() );
+        c.avancer();
+        assertEquals( 10, c.lire() );
+
+        assertTrue( c2.estVide() );
+    }
+
+    @Test
+    void insererTout_0_2() {
+        ListeEuclidienne<Integer> c = new ListeEuclidienne<>();
+        ListeEuclidienne<Integer> c2 = new ListeEuclidienne<>();
+
+        c2.inserer( 10 );
+        c2.inserer( 11 );
+
+        c.insererTout( c2 );
+
+        assertEquals( 2, c.taille() );
+        assertEquals( 11, c.lire() );
+        c.avancer();
+        assertEquals( 10, c.lire() );
+
+        assertEquals( 2, c2.taille() );
+    }
+
+    @Test
+    void insererTout_3_2() {
+        ListeEuclidienne<Integer> c = new ListeEuclidienne<>();
+
+        c.inserer( 12 );
+        c.inserer( 11 );
+        c.inserer( 10 );
+
+        ListeEuclidienne<Integer> c2 = new ListeEuclidienne<>();
+
+        c2.inserer( 16 );
+        c2.inserer( 15 );
+
+        c.insererTout( c2 );
+
+        assertEquals( 5, c.taille() );
+        assertEquals( 10, c.lire() );
+        c.avancer();
+        assertEquals( 11, c.lire() );
+        c.avancer();
+        assertEquals( 12, c.lire() );
+        c.avancer();
+        assertEquals( 15, c.lire() );
+        c.avancer();
+        assertEquals( 16, c.lire() );
+
+        assertEquals( 2, c2.taille() );
+    }
+
+    @Test
+    void insererTout_3_2i() {
+        ListeEuclidienne<Integer> c = new ListeEuclidienne<>();
+
+        c.inserer( 12 );
+        c.inserer( 11 );
+        c.inserer( 10 );
+        c.inverser();
+
+        ListeEuclidienne<Integer> c2 = new ListeEuclidienne<>();
+
+        c2.inserer( 16 );
+        c2.inserer( 15 );
+
+        c.insererTout( c2 );
+
+        assertEquals( 5, c.taille() );
+        assertEquals( 10, c.lire() );
+        c.avancer();
+        assertEquals( 12, c.lire() );
+        c.avancer();
+        assertEquals( 11, c.lire() );
+        c.avancer();
+        assertEquals( 15, c.lire() );
+        c.avancer();
+        assertEquals( 16, c.lire() );
+
+        assertEquals( 2, c2.taille() );
+    }
+
+    @Test
+    void zip_3_3() {
+        ListeEuclidienne<Integer> c1 = new ListeEuclidienne<>();
+
+        c1.inserer( 10 );
+        c1.inserer( 11 );
+        c1.inserer( 12 );
+
+        ListeEuclidienne<Integer> c2 = new ListeEuclidienne<>();
+
+        c2.inserer( 1 );
+        c2.inserer( 2 );
+        c2.inserer( 3 );
+
+        ListeEuclidienne<Integer> cr = ListeEuclidienne.zip( c1, c2, 3, ( x, y ) -> x + y );
+
+        assertEquals( 3, cr.taille() );
+        assertEquals( 15, cr.lire() );
+        cr.avancer();
+        assertEquals( 13, cr.lire() );
+        cr.avancer();
+        assertEquals( 11, cr.lire() );
+
+        assertEquals( 3, c1.taille() );
+        assertEquals( 12, c1.lire() );
+        c1.avancer();
+        assertEquals( 11, c1.lire() );
+        c1.avancer();
+        assertEquals( 10, c1.lire() );
+
+        assertEquals( 3, c2.taille() );
+        assertEquals( 3, c2.lire() );
+        c2.avancer();
+        assertEquals( 2, c2.lire() );
+        c2.avancer();
+        assertEquals( 1, c2.lire() );
+    }
+
+    @Test
+    void zip_3_3_1() {
+        ListeEuclidienne<Integer> c1 = new ListeEuclidienne<>();
+
+        c1.inserer( 10 );
+        c1.inserer( 11 );
+        c1.inserer( 12 );
+
+        ListeEuclidienne<Integer> c2 = new ListeEuclidienne<>();
+
+        c2.inserer( 1 );
+        c2.inserer( 2 );
+        c2.inserer( 3 );
+
+        ListeEuclidienne<Integer> cr = ListeEuclidienne.zip( c1, c2, 1, ( x, y ) -> x - y );
+
+        assertEquals( 1, cr.taille() );
+        assertEquals( 9, cr.lire() );
+
+        assertEquals( 3, c1.taille() );
+        assertEquals( 12, c1.lire() );
+        c1.avancer();
+        assertEquals( 11, c1.lire() );
+        c1.avancer();
+        assertEquals( 10, c1.lire() );
+
+        assertEquals( 3, c2.taille() );
+        assertEquals( 3, c2.lire() );
+        c2.avancer();
+        assertEquals( 2, c2.lire() );
+        c2.avancer();
+        assertEquals( 1, c2.lire() );
+    }
+
+    @Test
+    void zip_3_1() {
+        ListeEuclidienne<Integer> c1 = new ListeEuclidienne<>();
+
+        c1.inserer( 10 );
+        c1.inserer( 11 );
+        c1.inserer( 12 );
+
+        ListeEuclidienne<Integer> c2 = new ListeEuclidienne<>();
+
+        c2.inserer( 1 );
+
+        ListeEuclidienne<Integer> cr = ListeEuclidienne.zip( c1, c2, 3, ( x, y ) -> x + y );
+
+        assertEquals( 3, cr.taille() );
+        assertEquals( 13, cr.lire() );
+        cr.avancer();
+        assertEquals( 12, cr.lire() );
+        cr.avancer();
+        assertEquals( 11, cr.lire() );
+
+        assertEquals( 3, c1.taille() );
+        assertEquals( 12, c1.lire() );
+        c1.avancer();
+        assertEquals( 11, c1.lire() );
+        c1.avancer();
+        assertEquals( 10, c1.lire() );
+
+        assertEquals( 1, c2.taille() );
+        assertEquals( 1, c2.lire() );
+    }
+
+    @Test
+    void zip_1_3() {
+        ListeEuclidienne<Integer> c1 = new ListeEuclidienne<>();
+
+        c1.inserer( 10 );
+
+        ListeEuclidienne<Integer> c2 = new ListeEuclidienne<>();
+
+        c2.inserer( 1 );
+        c2.inserer( 2 );
+        c2.inserer( 3 );
+
+        ListeEuclidienne<Integer> cr = ListeEuclidienne.zip( c1, c2, 3, ( x, y ) -> x + y );
+
+        assertEquals( 3, cr.taille() );
+        assertEquals( 13, cr.lire() );
+        cr.avancer();
+        assertEquals( 12, cr.lire() );
+        cr.avancer();
+        assertEquals( 11, cr.lire() );
+
+        assertEquals( 1, c1.taille() );
+        assertEquals( 10, c1.lire() );
+
+        assertEquals( 3, c2.taille() );
+        assertEquals( 3, c2.lire() );
+        c2.avancer();
+        assertEquals( 2, c2.lire() );
+        c2.avancer();
+        assertEquals( 1, c2.lire() );
+    }
+
+    @Test
+    void iter0() {
+        ListeEuclidienne<Integer> c = new ListeEuclidienne<>();
+
+        Iterator<Integer> it = c.iterator();
+
+        assertFalse( it.hasNext() );
+    }
+
+    @Test
+    void iter1() {
+        ListeEuclidienne<Integer> c = new ListeEuclidienne<>();
+
+        c.inserer( 10 );
+
+        Iterator<Integer> it = c.iterator();
+
+        for( int i = 0; i < 5; ++ i ) {
+            assertTrue( it.hasNext() );
+            assertEquals( 10, it.next() );
+        }
+    }
+
+    @Test
+    void iter3() {
+        ListeEuclidienne<Integer> c = new ListeEuclidienne<>();
+
+        c.inserer( 10 );
+        c.inserer( 11 );
+        c.inserer( 12 );
+
+        Iterator<Integer> it = c.iterator();
+
+        assertEquals( 12, it.next() );
+        assertEquals( 11, it.next() );
+        assertEquals( 10, it.next() );
+        assertEquals( 12, it.next() );
+        assertEquals( 11, it.next() );
+        assertEquals( 10, it.next() );
+    }
+
+    @Test
+    void iter3r() {
+        ListeEuclidienne<Integer> c = new ListeEuclidienne<>();
+
+        c.inserer( 10 );
+        c.inserer( 11 );
+        c.inserer( 12 );
+        c.inverser();
+
+        Iterator<Integer> it = c.iterator();
+
+        assertEquals( 12, it.next() );
+        assertEquals( 10, it.next() );
+        assertEquals( 11, it.next() );
+        assertEquals( 12, it.next() );
+        assertEquals( 10, it.next() );
+        assertEquals( 11, it.next() );
+    }
 }
