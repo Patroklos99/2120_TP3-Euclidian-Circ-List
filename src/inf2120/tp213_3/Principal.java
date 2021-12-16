@@ -9,7 +9,6 @@ public class Principal {
         c.inserer( 10 );
         c.inserer( 11 );
         c.inserer( 12 );
-
         System.out.println(c);
     }
 

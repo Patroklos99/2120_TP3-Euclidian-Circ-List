@@ -84,8 +84,8 @@ public class ListeEuclidienne<E> implements Iterable<E> {
          * lecture lors de la construction de l'itérateur.</p>
          */
         public Iter() {
-            if (n == 0)
-                pointeur = null;
+            if (n == 9)
+                premier = null;
         }
 
 
@@ -97,7 +97,7 @@ public class ListeEuclidienne<E> implements Iterable<E> {
          */
         @Override
         public boolean hasNext() {
-            return null != pointeur;
+            return null != premier;
         }
 
 
@@ -112,16 +112,24 @@ public class ListeEuclidienne<E> implements Iterable<E> {
          */
         @Override
         public E next() throws NoSuchElementException {
-           pointeur = pointeur.suivant;
-            dernier = pointeur.suivant;
-            return pointeur.suivant.element;
+            if (directionCourante == Direction.HORAIRE) {
+                E elemento = premier.element;
+                premier = premier.suivant;
+                dernier = premier.suivant;
+                return elemento;
+            } else {
+                E elemento = premier.element;
+                premier = premier.precedant;
+                //dernier = premier.precedant;
+                return elemento;
+            }
+
         }
     }
 
     Direction directionCourante = Direction.HORAIRE;
     Chainon<E> premier;
     Chainon<E> dernier;
-    Chainon<E> pointeur;
     private int n = 0;
 
     /**
@@ -130,7 +138,6 @@ public class ListeEuclidienne<E> implements Iterable<E> {
     public ListeEuclidienne() {
         premier = null;
         dernier = null;
-        pointeur = premier;
     }
 
 
@@ -155,13 +162,12 @@ public class ListeEuclidienne<E> implements Iterable<E> {
                     dernier = nouveau;
                 } else {
                     dernier.suivant = nouveau;
-                    nouveau.suivant = pointeur;
+                    nouveau.suivant = premier;
                     nouveau.precedant = dernier;
                     premier = nouveau;
                     premier.precedant = dernier;
 
                 }
-                pointeur = premier;
                 compteur++;
             } while (compteur != n);
         }
@@ -186,9 +192,9 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      */
     public E lire() throws NoSuchElementException {
         Chainon<E> actuel = new Chainon<>();
-        actuel = pointeur;
+        actuel = premier;
         if (actuel != null) {
-            actuel = pointeur;
+            actuel = premier;
         } else {
             throw new NoSuchElementException();
         }
@@ -243,8 +249,8 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      * @throws ListeVideException Lancé si la {@code ListeEuclidienne} est vide.
      */
     public void ecrire(E element) throws ListeVideException {
-        if (pointeur != null) {
-            pointeur.element = element;
+        if (premier != null) {
+            premier.element = element;
         } else {
             throw new ListeVideException();
         }
@@ -267,23 +273,15 @@ public class ListeEuclidienne<E> implements Iterable<E> {
         nouveau.element = element;
         if (premier == null) {
             premier = nouveau;
-            premier.suivant = premier;
-            nouveau.precedant = dernier;
-            dernier = nouveau;
+            nouveau.suivant = nouveau.precedant = nouveau;
+            dernier = premier;
         } else {
-            nouveau.suivant = pointeur;
+            nouveau.suivant = premier;
             nouveau.precedant = dernier;
+            premier.precedant = nouveau;
             dernier.suivant = nouveau;
-            pointeur.precedant = nouveau;
             premier = nouveau;
-            /*nouveau.suivant = pointeur;
-            dernier.suivant = nouveau;
-            nouveau.precedant = pointeur;
-            premier = nouveau;
-            premier.precedant = pointeur;*/
-
         }
-        pointeur = nouveau;
         n++;
     }
 
@@ -358,7 +356,7 @@ public class ListeEuclidienne<E> implements Iterable<E> {
             actuel = actuel.suivant;
         } while (actuel != premier && premier != null);
         n--;
-        pointeur = premier;
+        //pointeur = premier;
         return null;
     }
 
