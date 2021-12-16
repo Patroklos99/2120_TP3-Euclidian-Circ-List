@@ -377,6 +377,24 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      *              pré-condition : non {@code null}.
      */
     public void insererTout(ListeEuclidienne<E> liste) {
+        int compteur = 0;
+        liste.premier = liste.dernier;
+        Iterator<E> iterator = liste.iterator();
+        if (!liste.estVide()) {
+            if (this.estVide()) {
+                for (liste.lire(); compteur < liste.n; inserer(iterator.next())) {
+                    compteur++;
+            }
+            } else {
+                Chainon<E> testa = premier;
+                liste.premier = liste.dernier;
+                for (liste.lire(); compteur < liste.n; inserer(iterator.next())) {
+                    compteur++;
+                }
+                premier = testa;
+            }
+        }
+
     }
 
 
