@@ -436,16 +436,20 @@ public class ListeEuclidienne<E> implements Iterable<E> {
     public static <E, F, G>
     ListeEuclidienne<G> zip(ListeEuclidienne<E> liste1, ListeEuclidienne<F> liste2, int n, BiFunction<E, F, G> fusion) {
         ListeEuclidienne<G> liste3 = new ListeEuclidienne<>();
+        Chainon<E> temp = liste1.premier;
+        Chainon<F> temp2 = liste2.premier;
         Iterator<E> it = liste1.iterator();
         Iterator<F> it2 = liste2.iterator();
         Iterator<F> it3 = liste2.iterator();
+        int compteur = 0;
         if (!liste1.estVide() && !liste2.estVide()) {
-            int compteur = 0;
             while (compteur < n) {
                 G element = fusion.apply((it.next()), it2.next());
                 liste3.inserer(element);
                 compteur++;
             }
+            liste1.premier = temp;
+            liste2.premier = temp2;
             liste3.inverser();
             liste3.avancer();
         }

@@ -517,6 +517,7 @@ class ListeEuclidienneTest {
         c2.inserer( 15 );
 
         c.insererTout( c2 );
+        c.lire();
 
         assertEquals( 5, c.taille() );
         assertEquals( 10, c.lire() );
