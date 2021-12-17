@@ -1,5 +1,7 @@
 package inf2120.tp213_3;
 
+import com.sun.source.tree.WhileLoopTree;
+
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.NoSuchElementException;
@@ -115,7 +117,7 @@ public class ListeEuclidienne<E> implements Iterable<E> {
             if (directionCourante == Direction.HORAIRE) {
                 E elemento = premier.element;
                 premier = premier.suivant;
-                dernier = premier.suivant;
+                //dernier = premier.suivant;
                 return elemento;
             } else {
                 E elemento = premier.element;
@@ -269,6 +271,7 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      * @param element Une référence sur l'élément à insérer.
      */
     public void inserer(E element) {
+        Chainon<E> temp = new Chainon<>();
         Chainon<E> nouveau = new Chainon<>();
         nouveau.element = element;
         if (premier == null) {
@@ -276,9 +279,11 @@ public class ListeEuclidienne<E> implements Iterable<E> {
             nouveau.suivant = nouveau.precedant = nouveau;
             dernier = premier;
         } else {
+            temp = premier.precedant;
             nouveau.suivant = premier;
-            nouveau.precedant = dernier;
+            nouveau.precedant = temp;
             premier.precedant = nouveau;
+            dernier = temp;
             dernier.suivant = nouveau;
             premier = nouveau;
         }
@@ -430,7 +435,21 @@ public class ListeEuclidienne<E> implements Iterable<E> {
      */
     public static <E, F, G>
     ListeEuclidienne<G> zip(ListeEuclidienne<E> liste1, ListeEuclidienne<F> liste2, int n, BiFunction<E, F, G> fusion) {
-        return null;
+        ListeEuclidienne<G> liste3 = new ListeEuclidienne<>();
+        Iterator<E> it = liste1.iterator();
+        Iterator<F> it2 = liste2.iterator();
+        Iterator<F> it3 = liste2.iterator();
+        if (!liste1.estVide() && !liste2.estVide()) {
+            int compteur = 0;
+            while (compteur < n) {
+                G element = fusion.apply((it.next()), it2.next());
+                liste3.inserer(element);
+                compteur++;
+            }
+            liste3.inverser();
+            liste3.avancer();
+        }
+        return liste3;
     }
 
 

@@ -4,19 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Principal {
     public static void main(String[] args) {
-        ListeEuclidienne<Integer> c = new ListeEuclidienne<>();
-
-        c.inserer( 12 );
-        c.inserer( 11 );
-        c.inserer( 10 );
-
         ListeEuclidienne<Integer> c2 = new ListeEuclidienne<>();
 
-        c2.inserer( 16 );
-        c2.inserer( 15 );
+        c2.inserer( 1 );
+        c2.inserer( 2 );
+        c2.inserer( 3 );
 
         System.out.println(c2.lire());
-        System.out.println(c);
     }
 
 }
